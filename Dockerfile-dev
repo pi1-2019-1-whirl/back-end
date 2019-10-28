@@ -1,0 +1,22 @@
+# base image 
+FROM python:3.7.4
+
+# install dependencies
+RUN apt-get update && apt-get install -y netcat
+
+#setting working directory
+WORKDIR /app
+
+# dealing with requirements
+COPY ./requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
+
+# add app 
+COPY . /app
+
+# add entrypoint.sh
+COPY ./entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# run server
+CMD ["/app/entrypoint.sh"]

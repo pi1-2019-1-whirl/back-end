@@ -1,0 +1,2 @@
+create database whirl_db_dev
+create database whirl_db_test

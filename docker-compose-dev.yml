@@ -1,0 +1,28 @@
+version: '3.6'
+
+services:
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes:
+      - '.:/app'
+    ports:
+      - 5001:5000
+    environment:
+      - FLASK_ENV=development
+      - APP_SETTINGS=project.config.DevConfig
+      - DATABASE_URL=postgres://postgres:postgres@whirl-db:5432/whirl_db_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@whirl-db:5432/whirl_db_test
+    depends_on:
+      - whirl-db
+
+  whirl-db:
+    build:
+      context: ./project/db
+      dockerfile: Dockerfile
+    ports:
+        - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
