@@ -1,8 +1,11 @@
 # base image 
-FROM python:3.7.4
+FROM python:3.7.4-alpine
 
 # install dependencies
-RUN apt-get update && apt-get install -y netcat
+RUN apk update && \
+    apk add --virtual build-deps gcc python-dev musl-dev && \
+    apk add postgresql-dev && \
+    apk add netcat-openbsd
 
 #setting working directory
 WORKDIR /app
