@@ -8,6 +8,7 @@ class WaterBox(db.Model):
     volume        = db.Column(db.Float, nullable=True)
     position      = db.Column(db.String(128), nullable=True)
     pipe_size     = db.Column(db.Float, nullable=True)
+    energy_logs   = db.relationship('EnergyLog', backref="water_box")
 
     def __init__(self, material, volume, position, pipe_size):
         self.material       = material
@@ -21,5 +22,6 @@ class WaterBox(db.Model):
             'material': self.material,
             'volume': self.volume,
             'position': self.position,
-            'pipe_size': self.pipe_size
+            'pipe_size': self.pipe_size,
+            'energy_logs': self.energy_logs
         }

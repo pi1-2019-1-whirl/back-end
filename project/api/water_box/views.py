@@ -12,7 +12,8 @@ def create_water_box():
 
     if not data:
         return jsonify({
-            'error': 'Water box can not be created'
+            'status': 'Fail',
+            'message': 'Water box can not be created'
         }), 400
 
     material        = data.get('material')
@@ -27,14 +28,13 @@ def create_water_box():
 
         return jsonify({
             'status': 'success',
-            'data': {
-                'message': 'Water box was created'
-            }
+            'message': 'Water box was created'
         }), 200
     except exc.IntegrityError:
         db.session.rollback()
         return jsonify({
-            'error': 'Water box can not be created'
+            'status': 'Fail',
+            'message': 'Water box can not be created'
         }), 400
 
 @water_box_blueprint.route('/water_box/<int:id>', methods=['GET'])
