@@ -47,3 +47,20 @@ def create_energy_log(id):
             'status': 'Fail',
             'message': 'Energy log can not be created'
         }), 400
+
+@energy_log_blueprint.route('/energy_log/<int:id>', methods=['GET'])
+def get_last_log(id):
+    water_box = WaterBox.query.filter_by(id=id).first()
+
+    if not water_box:
+        return jsonify({
+            'status': 'Fail',
+            'message': 'Water box does not exist'
+        }), 404
+
+    energy_log = EnergyLog.query.filter_by(water_box_id=id).order_by(EnergyLog.time.desc()).first()
+
+    return jsonify({
+        'status': 'Success',
+        'data': energy_log.to_json()
+    }), 200
