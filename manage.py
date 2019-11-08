@@ -1,6 +1,7 @@
 from flask.cli import FlaskGroup
 from project import app , db
 from project.api.water_box.model import WaterBox
+from project.api.energy_log.model import EnergyLog
 
 
 cli = FlaskGroup(app)

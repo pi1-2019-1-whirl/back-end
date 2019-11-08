@@ -1,7 +1,7 @@
 from sqlalchemy.sql import func
 from project import db
 
-class WaterBox(db.Model):
+class EnergyLog(db.Model):
     __tablename__ = 'energy_log'
     id              = db.Column(db.Integer, primary_key=True, autoincrement=True)
     current         = db.Column(db.Float, nullable=True)

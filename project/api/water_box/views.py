@@ -36,3 +36,11 @@ def create_water_box():
         return jsonify({
             'error': 'Water box can not be created'
         }), 400
+
+@water_box_blueprint.route('/water_box/<int:id>', methods=['GET'])
+def get_water_box(id):
+    water_box = WaterBox.query.filter_by(id=id).first()
+
+    return jsonify({
+        'water_box': water_box.to_json()
+    })
