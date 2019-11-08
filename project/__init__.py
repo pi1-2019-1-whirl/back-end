@@ -14,4 +14,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from project.api.water_box.views import water_box_blueprint
+from project.api.energy_log.views import energy_log_blueprint
+
 app.register_blueprint(water_box_blueprint)
+app.register_blueprint(energy_log_blueprint)
