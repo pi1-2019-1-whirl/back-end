@@ -72,3 +72,26 @@ def delete_water_box(id):
         'status': 'Success',
         'message': 'Water box deleted'
     })
+
+@water_box_blueprint.route('/water_box/<int:id>', methods=['PUT'])
+def edit_water_box(id):
+    data = request.get_json()
+
+    water_box = WaterBox.query.filter_by(id=id).first()
+
+    if data['material']: 
+        water_box.material = data['material']
+    if data['volume']:
+        water_box.volume = data['volume']
+    if data['position']:
+        water_box.position = data['position']
+    if data['pipe_size']:
+        water_box.pipe_size = data['pipe_size']
+
+    db.session.add(water_box)
+    db.session.commit()
+
+    return jsonify({
+        'status': 'Success',
+        'message': 'Water box was edited'
+    }), 200
