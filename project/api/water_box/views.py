@@ -42,7 +42,17 @@ def get_water_box(id):
     water_box = WaterBox.query.filter_by(id=id).first()
 
     return jsonify({
+        'status': 'Success',
         'water_box': water_box.to_json()
+    })
+
+@water_box_blueprint.route('/water_box', methods=['GET'])
+def get_all_water_box():
+    water_boxes = [water_box.to_json() for water_box in WaterBox.query.all()]
+
+    return jsonify({
+        'ststus': 'Success',
+        'water_boxes': water_boxes
     })
 
 @water_box_blueprint.route('/water_box/<int:id>', methods=['DELETE'])
