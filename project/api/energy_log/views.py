@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 from project.api.energy_log.model import EnergyLog
 from project.api.water_box.model import WaterBox
-from datetime import datetime
+from datetime import datetime, timedelta
+import json
 
 from sqlalchemy import exc
 from project import db
@@ -64,3 +65,30 @@ def get_last_log(id):
         'status': 'Success',
         'data': energy_log.to_json()
     }), 200
+
+@energy_log_blueprint.route('/energy_log/<int:id>/<int:days>', methods=['GET'])
+def get_logs_by_days(id, days):
+    water_box = WaterBox.query.filter_by(id=id).first()
+
+    if not water_box:
+        return jsonify({
+            'status': 'Fail',
+            'message': 'Water box does not exist'
+        }), 404
+
+    last_date = datetime.now() - timedelta(days=days)
+    energy_logs = [energy_log for energy_log in EnergyLog.query.filter_by(water_box_id=id).all()]
+    energy_logs = filter( lambda x: filter_date(x, last_date), energy_logs)
+    energy_logs = [energy_log.to_json() for energy_log in energy_logs]
+
+    return jsonify({
+        'status': 'Success',
+        'data': energy_logs
+    })
+
+def filter_date(energy_log, last_date):
+    if(energy_log.time >= last_date):
+        return True
+    else:
+        return False
+
