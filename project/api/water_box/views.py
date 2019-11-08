@@ -44,3 +44,21 @@ def get_water_box(id):
     return jsonify({
         'water_box': water_box.to_json()
     })
+
+@water_box_blueprint.route('/water_box/<int:id>', methods=['DELETE'])
+def delete_water_box(id):
+    water_box = WaterBox.query.filter_by(id=id).first()
+
+    if not water_box:
+        return jsonify({
+            'status': 'Fail',
+            'message': 'Water box not found'
+        }), 404
+
+    db.session.delete(water_box)
+    db.session.commit()
+
+    return jsonify({
+        'status': 'Success',
+        'message': 'Water box deleted'
+    })
