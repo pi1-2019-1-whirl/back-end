@@ -61,6 +61,12 @@ def get_last_log(id):
 
     energy_log = EnergyLog.query.filter_by(water_box_id=id).order_by(EnergyLog.time.desc()).first()
 
+    if  not energy_log:
+        return jsonify({
+            'status': 'Fail',
+            'message': 'Log could not be created'
+        }), 400
+
     return jsonify({
         'status': 'Success',
         'data': energy_log.to_json()
